@@ -1,42 +1,109 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.App {
+    margin: 0;
+    width: 100vw;
+    overflow: hidden;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.active {
+    text-decoration: underline;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+body {
+    background-image: url("https://uploads.panopto.com/2018/12/07144605/panopto-employee-training-video-library.jpg");
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    background-blend-mode: lighten;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.nav-title {
+  text-decoration: none;
+  color: black;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
-.card {
-  padding: 2em;
+.nav {
+    display: inline-flex;
 }
 
-.read-the-docs {
-  color: #888;
+.nav-link, ul{
+    list-style-type: none;
+    color: #70A4E0;
+    font-weight: 400;
+    font-size: large;
+}
+
+ul {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+li {
+  display: inline-flex;
+}
+
+.nav-link {
+      padding: 2rem;
+}
+
+.landing-page {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+
+}
+
+.details-display {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 5%;
+    color: #090B38;
+}
+
+.app-name {
+    letter-spacing: 10px;
+    font-weight: bold;
+    font-size: 3rem;
+    margin-bottom: 0;
+}
+
+.tag-line {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.image-container {
+    display: flex;
+    align-items: flex-end;
+    height: 100vh;
+}
+
+.homepage-image {
+    max-height: 70vh;
+    max-width: 50vw;
+    width: auto;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.search-button {
+    border-radius: 5px;
+    background-color: #6f9ed6;
+    color: white;
+    border: 2px solid #090B38;
+    font-weight: 400;
+    margin-top: 2rem;
 }
