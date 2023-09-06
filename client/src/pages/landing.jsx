@@ -1,7 +1,15 @@
 import React from "react";
 import bookImage from "../images/bookImage.png"
+import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
+  const navigate = useNavigate();
+
+  const directToSearch = (e) => {
+    e.preventDefault();
+    navigate(`/search`)
+  }
+
     return (
         <section className="landing-page">
             <div className="image-container">
@@ -17,7 +25,7 @@ const Landing = () => {
                     What you've read, what you want to read, all in one place.
                 </h4>
                 <div className="button-container">
-                    <button className="search-button">search books</button>
+                    <button onClick={directToSearch} className="search-button">search books</button>
                 </div>
             </div>
         </section>

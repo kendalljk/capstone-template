@@ -16,6 +16,7 @@ function App() {
                     <Route path="/" exact element={<Landing />} />
                     <Route path="/shelf" element={<Shelf />} />
                     <Route path="/tbr" element={<TBR />} />
+                    <Route path="/search" element={<Search />} />
                     <Route path="/search/:query" element={<Search />} />
                 </Routes>
             </div>
