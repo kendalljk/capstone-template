@@ -7,9 +7,9 @@ import {
 } from "react-router-dom";
 import Landing from "./pages/landing/landing";
 import Shelf from "./pages/bookshelf/shelf";
-import TBR from "./pages/tbr";
+import TBR from "./pages/tbr/tbr";
 import Navigation from "./components/Navigation";
-import Search from "./pages/search";
+import Search from "./pages/search/search";
 import "./App.css";
 
 function UseLocationEffect() {
@@ -18,7 +18,8 @@ function UseLocationEffect() {
     useEffect(() => {
         const isLandingPage = location.pathname === "/";
 
-        document.body.classList.toggle("landing-background", isLandingPage);
+        const display = document.querySelector('.display')
+      display.classList.toggle("landing-background", isLandingPage);
     }, [location]);
 
     return null; // toggles between two alternating background images- hook instead?

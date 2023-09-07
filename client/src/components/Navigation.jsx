@@ -34,7 +34,7 @@ function Navigation() {
                         }}
                     />
                 </Link>
-                <h1 className="nav-title w-25">Shelf Help</h1>
+                <h1 className="fw-bold text-uppercase">Shelf Help</h1>
             </Navbar.Brand>
 
             <Navbar.Toggle aria-controls="basic-navbar-nav" className="mx-2" />
@@ -50,7 +50,7 @@ function Navigation() {
                                 to="/"
                                 exact="true"
                                 activeclassname="active-nav-link"
-                                className="nav-link"
+                                className="nav-link mx-5 fw-light fs-4"
                             >
                                 home
                             </NavLink>
@@ -59,7 +59,7 @@ function Navigation() {
                             <NavLink
                                 to="/shelf"
                                 activeclassname="active-nav-link"
-                                className="nav-link"
+                                className="nav-link mx-5 fw-light fs-4"
                             >
                                 shelf
                             </NavLink>
@@ -68,7 +68,7 @@ function Navigation() {
                             <NavLink
                                 to="/tbr"
                                 activeclassname="active-nav-link"
-                                className="nav-link"
+                                className="nav-link mx-5 fw-light fs-4"
                             >
                                 tbr
                             </NavLink>
@@ -76,11 +76,14 @@ function Navigation() {
                     </Nav>
                 </div>
 
-                <div className="search-form">
-            <Form onSubmit={handleSearch} className="d-flex align-items-center" >
+                <div className="d-flex position-relative mx-5">
+                    <Form
+                        onSubmit={handleSearch}
+                        className="d-flex align-items-center"
+                    >
                         <FormControl
                             type="search"
-                            className="searchParams nav-search"
+                            className="searchParams nav-search w-100"
                             placeholder="search books..."
                         />
                     </Form>

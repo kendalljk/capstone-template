@@ -24,61 +24,20 @@ body {
     justify-content: center;
 }
 
-.landing-background {
+.display.landing-background {
       background-image: url("../src/images/landing-background.png") !important;
 }
 
 .active {
     text-decoration: underline !important;
 }
-.nav-title {
-    color: black;
-    text-transform: uppercase;
-    font-weight: 00;
-}
-
-a {
-    text-decoration: none;
-}
 
 .nav-link {
     color: #70a4e0 !important;
-    font-weight: 400;
-    font-size: large;
 }
 
 .nav-search {
-  width: 15rem !important;
   background-color: #bbd2ed !important;
-}
-
-.nav-link {
-    padding: 2rem;
-}
-
-.search-form {
-  display: flex;
-  position: relative;
-  margin-right: 3rem;
-}
-
-.search-button {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: black;
-}
-
-ul {
-    margin-left: 0;
-    padding-left: 0;
-}
-
-li {
-    display: inline-flex;
 }
 
 .bookShelf {
