@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
 
 const TBR = () => {
-  return (
-    <div>TBR</div>
-  )
-}
+    return (
+        <section>
+            <div>TBR</div>
+        </section>
+    );
+};
 
-export default TBR
+export default TBR;

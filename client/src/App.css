@@ -1,109 +1,88 @@
-.App {
+html {
+    box-sizing: border-box;
     margin: 0;
-    width: 100vw;
-    overflow: hidden;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
 }
 
-.active {
-    text-decoration: underline;
+html,
+body,
+#root,
+.App {
+    height: 100vh;
+    width: 100%;
 }
 
 body {
-    background-image: url("https://uploads.panopto.com/2018/12/07144605/panopto-employee-training-video-library.jpg");
+    margin: 0;
+    place-items: flex-start;
+    background-image: url("../src/images/pages-background.png");
     background-size: cover;
     background-position: center;
-    background-color: rgba(255, 255, 255, 0.8);
-    background-blend-mode: lighten;
-    min-height: 100vh;
-    width: 100%;
     display: flex;
     justify-content: center;
 }
 
+.landing-background {
+      background-image: url("../src/images/landing-background.png") !important;
+}
+
+.active {
+    text-decoration: underline !important;
+}
 .nav-title {
-  text-decoration: none;
-  color: black;
-  text-transform: uppercase;
-  font-size: 1.5rem;
-  font-weight: 500;
+    color: black;
+    text-transform: uppercase;
+    font-weight: 00;
 }
 
-.nav {
-    display: inline-flex;
+a {
+    text-decoration: none;
 }
 
-.nav-link, ul{
-    list-style-type: none;
-    color: #70A4E0;
+.nav-link {
+    color: #70a4e0 !important;
     font-weight: 400;
     font-size: large;
 }
 
-ul {
-  margin-left: 0;
-  padding-left: 0;
-}
-
-li {
-  display: inline-flex;
+.nav-search {
+  width: 15rem !important;
+  background-color: #bbd2ed !important;
 }
 
 .nav-link {
-      padding: 2rem;
+    padding: 2rem;
 }
 
-.landing-page {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-
-}
-
-.details-display {
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 5%;
-    color: #090B38;
-}
-
-.app-name {
-    letter-spacing: 10px;
-    font-weight: bold;
-    font-size: 3rem;
-    margin-bottom: 0;
-}
-
-.tag-line {
-  font-size: 1.5rem;
-  font-weight: 400;
-  margin: 0;
-}
-
-.image-container {
-    display: flex;
-    align-items: flex-end;
-    height: 100vh;
-}
-
-.homepage-image {
-    max-height: 70vh;
-    max-width: 50vw;
-    width: auto;
-}
-
-.button-container {
-    display: flex;
-    justify-content: center;
+.search-form {
+  display: flex;
+  position: relative;
+  margin-right: 3rem;
 }
 
 .search-button {
-    border-radius: 5px;
-    background-color: #6f9ed6;
-    color: white;
-    border: 2px solid #090B38;
-    font-weight: 400;
-    margin-top: 2rem;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: black;
+}
+
+ul {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+li {
+    display: inline-flex;
+}
+
+.bookShelf {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }

@@ -1,16 +1,34 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Landing from "./pages/landing";
-import Shelf from "./pages/Shelf";
+import React, { useEffect } from "react";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    useLocation,
+} from "react-router-dom";
+import Landing from "./pages/landing/landing";
+import Shelf from "./pages/bookshelf/shelf";
 import TBR from "./pages/tbr";
 import Navigation from "./components/Navigation";
-import "./App.css";
 import Search from "./pages/search";
+import "./App.css";
+
+function UseLocationEffect() {
+    const location = useLocation();
+
+    useEffect(() => {
+        const isLandingPage = location.pathname === "/";
+
+        document.body.classList.toggle("landing-background", isLandingPage);
+    }, [location]);
+
+    return null; // toggles between two alternating background images- hook instead?
+}
 
 function App() {
     return (
         <Router>
             <div className="App">
+                <UseLocationEffect />
                 <Navigation />
                 <Routes>
                     <Route path="/" exact element={<Landing />} />
