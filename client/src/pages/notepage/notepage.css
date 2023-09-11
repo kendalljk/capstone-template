@@ -1,0 +1,14 @@
+.note-cover {
+  width: 20vw;
+}
+
+.note-button {
+    border-radius: 5px;
+    background-color: #6f9ed6;
+    color: white;
+    border: 3px solid #090b38;
+    font-weight: 400;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    font-size: larger;
+}

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./search.css";
-import BookMenu from "../../components/BookMenu";
+//import BookMenu from "../../components/BookMenu";
 
 const Search = () => {
     let { query } = useParams();
+    const navigate = useNavigate();
     const [searchType, setSearchType] = useState("both");
     const [inputValue, setInputValue] = useState(query || "");
     const [searchValue, setSearchValue] = useState("");
+    const [category, setCategory] = useState("");
     const [books, setBooks] = useState([]);
+    const [mybook, setMyBook] = useState({});
 
     useEffect(() => {
         if (query) {
@@ -43,6 +46,19 @@ const Search = () => {
         } catch (err) {
             console.error("Failed to fetch data:", err);
         }
+    };
+
+    const handleCategory = (e, book) => {
+        const newMyBook = {
+            author: book.author,
+            title: book.title,
+            cover: book.coverI,
+            category: e.target.value,
+        };
+
+        setMyBook(newMyBook);
+
+        navigate(`/note/${book.title}`, { state: { myBook: newMyBook } });
     };
 
     const handleSubmit = (e) => {
@@ -109,22 +125,49 @@ const Search = () => {
                             </h2>
                         )}
                     </div>
-                    <div className="d-flex flex-column align-items-center w-100">
-                        {books.map((book, index) => (
-                            <div className="d-flex w-50 py-4">
-                                <div key={index}>
-                                    <img
-                                        src={`http://covers.openlibrary.org/b/id/${book.coverI}-M.jpg`}
-                                        alt={`${book.title} cover`}
-                                    />
+                    <div className="container w-50 sm-w-100">
+                        <div className="row">
+                            {books.map((book, index) => (
+                                <div key={index} className="col-12 my-4">
+                                    <div className="d-flex flex-column flex-md-row">
+                                        <div className="sm-w-100">
+                                            <img
+                                                src={`http://covers.openlibrary.org/b/id/${book.coverI}-M.jpg`}
+                                                alt={`${book.title} cover`}
+                                            />
+                                        </div>
+                                        <div className="flex-grow-1 ms-md-4">
+                                            <h2 className="fst-italic">
+                                                {book.title}
+                                            </h2>
+                                            <h4>by {book.author}</h4>
+                                            <div className="py-4">
+                                                <select
+                                                    className="book-menu"
+                                                    value={category}
+                                                    onChange={(e) =>
+                                                        handleCategory(e, book)
+                                                    }
+                                                >
+                                                    <option defaultValue="">
+                                                        Add to Shelf
+                                                    </option>
+                                                    <option value="tbr">
+                                                        Want to Read
+                                                    </option>
+                                                    <option value="reading">
+                                                        Reading
+                                                    </option>
+                                                    <option value="read">
+                                                        Read
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="px-5 text-italic">
-                                    <h2 className="fst-italic">{book.title}</h2>
-                                    <h4>by {book.author}</h4>
-                                    <BookMenu />
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </>
             )}

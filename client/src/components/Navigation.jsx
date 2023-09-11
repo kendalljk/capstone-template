@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
@@ -9,12 +9,12 @@ import logo from "../images/logo.png";
 function Navigation() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [searchValue, setSearchValue] = useState("");
 
     const handleSearch = (e) => {
         e.preventDefault();
-        const searchParams = document.querySelector(".searchParams").value;
-
-        navigate(`/search/${searchParams}`);
+      navigate(`/search/${searchValue}`);
+      setSearchValue("")
     };
 
     return (
@@ -83,8 +83,10 @@ function Navigation() {
                     >
                         <FormControl
                             type="search"
-                            className="searchParams nav-search w-100"
+                            className="searchParams nav-search"
                             placeholder="search books..."
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
                         />
                     </Form>
                 </div>

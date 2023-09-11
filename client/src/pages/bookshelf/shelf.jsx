@@ -55,14 +55,14 @@ const Shelf = () => {
     return (
         <section className="display bookShelf">
             <div className="d-flex flex-column">
-                <h2 className="shelf-heading mt-1 mx-2 fst-italic fw-normal">
+                <h2 className="shelf-heading mt-5 mx-5 fst-italic fw-normal">
                     Currently reading...
                 </h2>
                 <div className="reading mt-2 d-flex flex-wrap">
                     {readingBooks.map((book, i) => (
                         <div
                             key={i}
-                            className="text-center col-sm-2 col-lg-1 mx-4"
+                            className="text-center d-flex  flex-column align-items-center col-sm-2 col-lg-1 mx-5 mt-3"
                         >
                             <ShelfDisplay
                                 cover={book.cover}
@@ -74,14 +74,14 @@ const Shelf = () => {
                 </div>
             </div>
             <div className="read mt-2">
-                <h2 className="shelf-heading mt-1 mx-2 fst-italic fw-normal">
+                <h2 className="shelf-heading mt-5 mx-5 fst-italic fw-normal">
                     On the shelf...
                 </h2>
                 <div className="reading mt-2 d-flex flex-wrap">
                     {readBooks.map((book, i) => (
                         <div
                             key={i}
-                            className="text-center col-lg-1 col-md-2 col-6 mx-4"
+                            className="text-center d-flex  flex-column align-items-center col-sm-2 col-lg-1 mx-5 mt-3"
                         >
                             <ShelfDisplay
                                 key={i}
