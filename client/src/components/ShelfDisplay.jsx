@@ -1,6 +1,6 @@
 import React from "react";
 
-const BookDisplay = ({ cover, title, author }) => {
+const ShelfDisplay = ({ cover, title, author }) => {
     return (
         <div className="d-flex flex-column align-items-center w-100">
             <img src={cover} alt={`${title} cover`} height="200rem" />
@@ -12,4 +12,4 @@ const BookDisplay = ({ cover, title, author }) => {
     );
 };
 
-export default BookDisplay;
+export default ShelfDisplay;

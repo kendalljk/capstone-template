@@ -1,5 +1,5 @@
 import React from "react";
-import BookDisplay from "../../components/BookDisplay";
+import ShelfDisplay from "../../components/ShelfDisplay";
 import "../bookshelf/shelf.css";
 import cover from "../../images/cover.png";
 
@@ -64,7 +64,7 @@ const Shelf = () => {
                             key={i}
                             className="text-center col-sm-2 col-lg-1 mx-4"
                         >
-                            <BookDisplay
+                            <ShelfDisplay
                                 cover={book.cover}
                                 title={book.title}
                                 author={book.author}
@@ -83,7 +83,7 @@ const Shelf = () => {
                             key={i}
                             className="text-center col-lg-1 col-md-2 col-6 mx-4"
                         >
-                            <BookDisplay
+                            <ShelfDisplay
                                 key={i}
                                 cover={book.cover}
                                 title={book.title}

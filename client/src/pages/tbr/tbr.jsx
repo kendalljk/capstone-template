@@ -1,6 +1,6 @@
 import React from "react";
 import cover from "../../images/cover.png";
-import BookDisplay from "../../components/BookDisplay";
+import ShelfDisplay from "../../components/ShelfDisplay";
 
 
 const TBR = () => {
@@ -65,7 +65,7 @@ const TBR = () => {
                             key={i}
                             className="text-center col-sm-2 col-lg-1 mx-4"
                         >
-                            <BookDisplay
+                            <ShelfDisplay
                                 cover={book.cover}
                                 title={book.title}
                                 author={book.author}

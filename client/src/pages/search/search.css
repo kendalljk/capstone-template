@@ -1,0 +1,26 @@
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label {
+    color: black !important;
+    text-transform: uppercase;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.search-display {
+    color: #70a4e0;
+    text-transform:capitalize;
+}
+
+.search-button {
+    border-radius: 5px;
+    background-color: #6f9ed6;
+    color: white;
+    border: 3px solid #090b38;
+    font-weight: 400;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    font-size: larger;
+}
