@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import "../notepage/notepage.css";
 
 const NotePage = () => {
     const location = useLocation();
     const myBook = location.state?.myBook;
+    const [myNote, setMyNote] = useState('')
     console.log("My Book", myBook);
 
     return (
@@ -43,7 +44,7 @@ const NotePage = () => {
                 </div>
                 <div className="d-flex flex-column">
                     <label htmlFor="book-notes" className="fs-4 fw-medium">
-                        quotes:
+                        notes:
                     </label>
                     <textarea
                         className="rounded border-0 p-2"

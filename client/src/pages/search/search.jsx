@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./search.css";
-//import BookMenu from "../../components/BookMenu";
+import axios from "axios";
 
 const Search = () => {
     let { query } = useParams();
@@ -48,17 +48,34 @@ const Search = () => {
         }
     };
 
-    const handleCategory = (e, book) => {
-        const newMyBook = {
+    const handleCategory = async (e, book) => {
+        const newBook = {
             author: book.author,
             title: book.title,
             cover: book.coverI,
             category: e.target.value,
         };
 
-        setMyBook(newMyBook);
+        setMyBook(newBook);
+        if (newBook.category === "read") {
+            navigate(`/note/${book.title}`, { state: { myBook: newBook } });
+        } else {
+            try {
+                console.log(newBook);
+                const response = await axios.post(
+                    "http://localhost:3001/api/books",
+                    newBook
+                );
 
-        navigate(`/note/${book.title}`, { state: { myBook: newMyBook } });
+                if (response.status === 201) {
+                    console.log("Book successfully saved to MongoDB.");
+                } else {
+                    console.log("Failed to save the book.");
+                }
+            } catch (error) {
+                console.error("An error occurred:", error);
+            }
+        }
     };
 
     const handleSubmit = (e) => {
