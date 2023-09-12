@@ -76,6 +76,12 @@ const Search = () => {
                 console.error("An error occurred:", error);
             }
         }
+
+        if (newBook.category === "reading") {
+            navigate('/shelf');
+        } else if (newBook.category === "tbr") {
+            navigate("/tbr");
+        }
     };
 
     const handleSubmit = (e) => {

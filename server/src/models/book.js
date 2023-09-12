@@ -24,8 +24,6 @@ const bookSchema = new mongoose.Schema(
         },
         review: {
             type: String,
-            minlength: 10,
-            maxlength: 300,
         },
         quotes: {
             type: String,
