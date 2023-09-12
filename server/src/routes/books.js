@@ -26,6 +26,19 @@ bookRouter.post("/", async (req, res, next) => {
     }
 });
 
+bookRouter.get("/", async (req, res) => {
+    try {
+        const book = await Book.find();
+        if (book) {
+            res.json(book);
+        } else {
+            res.status(404).send("Cannot find book");
+        }
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
 bookRouter.get("/:title", async (req, res) => {
     try {
         const book = await Book.findOne({ title });

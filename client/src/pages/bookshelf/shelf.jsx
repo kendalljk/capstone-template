@@ -1,53 +1,25 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import axios from "axios";
 import ShelfDisplay from "../../components/ShelfDisplay";
 import "../bookshelf/shelf.css";
-import cover from "../../images/cover.png";
 
 const Shelf = () => {
-    const books = [
-        {
-            title: "Harry Potter and the Philosopher's stone",
-            author: "JK Rowling",
-            cover: cover,
-            category: "read",
-        },
-        {
-            title: "Harry Potter and the Chamber of Secrets",
-            author: "JK Rowling",
-            cover: cover,
-            category: "read",
-        },
-        {
-            title: "Harry Potter and the Prisoner of Azkaban",
-            author: "JK Rowling",
-            cover: cover,
-            category: "read",
-        },
-        {
-            title: "Harry Potter and the Goblet of Fire",
-            author: "JK Rowling",
-            cover: cover,
-            category: "read",
-        },
-        {
-            title: "Harry Potter and the Order of the Phoenix",
-            author: "JK Rowling",
-            cover: cover,
-            category: "read",
-        },
-        {
-            title: "Harry Potter and the Half-Blood Prince",
-            author: "JK Rowling",
-            cover: cover,
-            category: "read",
-        },
-        {
-            title: "Harry Potter and the Deathly Hallows",
-            author: "JK Rowling",
-            cover: cover,
-            category: "reading",
-        },
-    ];
+  const [books, setBooks] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(
+                    "http://localhost:3001/api/books"
+                );
+                setBooks(response.data);
+            } catch (error) {
+                console.error("An error occurred while fetching data: ", error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const readingBooks = books.filter((book) => book.category === "reading");
     const readBooks = books.filter((book) => book.category === "read");
