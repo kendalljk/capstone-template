@@ -1,10 +1,12 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ShelfDisplay from "../../components/ShelfDisplay";
 import "../bookshelf/shelf.css";
 
 const Shelf = () => {
-  const [books, setBooks] = useState([]);
+    const [books, setBooks] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,6 +24,7 @@ const Shelf = () => {
     }, []);
 
     const readingBooks = books.filter((book) => book.category === "reading");
+    console.log("Reading books", readingBooks);
     const readBooks = books.filter((book) => book.category === "read");
 
     return (
@@ -36,11 +39,7 @@ const Shelf = () => {
                             key={i}
                             className="text-center d-flex  flex-column align-items-center col-sm-2 col-lg-1 mx-5 mt-3"
                         >
-                            <ShelfDisplay
-                                cover={book.cover}
-                                title={book.title}
-                                author={book.author}
-                            />
+                            <ShelfDisplay book={book} />
                         </div>
                     ))}
                 </div>
@@ -55,12 +54,7 @@ const Shelf = () => {
                             key={i}
                             className="text-center d-flex  flex-column align-items-center col-sm-2 col-lg-1 mx-5 mt-3"
                         >
-                            <ShelfDisplay
-                                key={i}
-                                cover={book.cover}
-                                title={book.title}
-                                author={book.author}
-                            />
+                            <ShelfDisplay book={book} />
                         </div>
                     ))}
                 </div>

@@ -4,7 +4,7 @@ import "./search.css";
 import axios from "axios";
 
 const Search = () => {
-    let { query } = useParams();
+    const { query } = useParams();
     const navigate = useNavigate();
     const [searchType, setSearchType] = useState("both");
     const [inputValue, setInputValue] = useState(query || "");
