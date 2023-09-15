@@ -18,6 +18,12 @@ const NotePage = () => {
             [name]: value,
         }));
     };
+    const addCategory = (newCategory) => {
+        setMyNote((prevState) => ({
+            ...prevState,
+            category: newCategory,
+        }));
+    };
 
     const saveNote = async (event) => {
         event.preventDefault();
@@ -30,15 +36,31 @@ const NotePage = () => {
 
             if (
                 checkDuplicates.data &&
-              checkDuplicates.data.author === myNote.author &&
-              checkDuplicates.data.category === myNote.category
+                checkDuplicates.data.author === myNote.author
             ) {
-                alert("You already have that book on your shelf!");
-                console.error(
-                    "A book with the same title and author already exists."
-                );
-                return;
+                if (checkDuplicates.data.category === myNote.category) {
+                    alert("You already have that book on your shelf!");
+                    console.error(
+                        "A book with the same title, author, and category already exists."
+                    );
+                    return;
+                } else {
+                    const updateResponse = await axios.put(
+                        `http://localhost:3001/api/books/${encodeURIComponent(
+                            myNote.title
+                        )}`,
+                        myNote
+                    );
+                    if (updateResponse.status === 200) {
+                        console.log("Book successfully updated in MongoDB.");
+                        navigate("/shelf");
+                    } else {
+                        console.log("Failed to update the book.");
+                    }
+                    return;
+                }
             }
+
             const response = await axios.post(
                 "http://localhost:3001/api/books",
                 myNote
@@ -105,7 +127,7 @@ const NotePage = () => {
                         id="notes"
                         rows="5"
                     ></textarea>
-                    <BookMenu book={book} />
+                    <BookMenu book={myNote} addCategory={addCategory} />
                 </div>
                 <div className="d-flex justify-content-end mt-5">
                     <button type="submit" className="note-button">
