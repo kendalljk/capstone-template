@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../notepage/notepage.css";
+import BookMenu from "../../components/BookMenu";
 
 const NotePage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-    const myBook = location.state?.myBook;
-    const [myNote, setMyNote] = useState({ ...myBook });
+    const location = useLocation();
+    const navigate = useNavigate();
+    const book = location.state?.book;
+    const [myNote, setMyNote] = useState({ ...book });
     console.log("My Note", myNote);
 
     const addToNote = (event) => {
@@ -21,7 +22,23 @@ const NotePage = () => {
     const saveNote = async (event) => {
         event.preventDefault();
         try {
-            console.log(myNote);
+            const checkDuplicates = await axios.get(
+                `http://localhost:3001/api/books/${encodeURIComponent(
+                    myNote.title
+                )}`
+            );
+
+            if (
+                checkDuplicates.data &&
+              checkDuplicates.data.author === myNote.author &&
+              checkDuplicates.data.category === myNote.category
+            ) {
+                alert("You already have that book on your shelf!");
+                console.error(
+                    "A book with the same title and author already exists."
+                );
+                return;
+            }
             const response = await axios.post(
                 "http://localhost:3001/api/books",
                 myNote
@@ -34,8 +51,8 @@ const NotePage = () => {
             }
         } catch (error) {
             console.error("An error occurred:", error);
-      }
-      navigate('/shelf')
+        }
+        navigate("/shelf");
     };
 
     return (
@@ -43,13 +60,13 @@ const NotePage = () => {
             <div className="col-md-6 col-12 d-flex justify-content-center">
                 <img
                     className="note-cover w-auto"
-                    src={`http://covers.openlibrary.org/b/id/${myBook.cover}-L.jpg`}
-                    alt={`${myBook.title} cover`}
+                    src={`http://covers.openlibrary.org/b/id/${book.cover}-L.jpg`}
+                    alt={`${book.title} cover`}
                 />
             </div>
             <form onSubmit={saveNote} className="col-md-6 col-12">
-                <h2 className="fst-italic">{myBook.title}</h2>
-                <p className="fs-4 fw-medium">by {myBook.author}</p>
+                <h2 className="fst-italic">{book.title}</h2>
+                <p className="fs-4 fw-medium">by {book.author}</p>
                 <div className="d-flex flex-column">
                     <label htmlFor="review" className="fs-4 fw-medium">
                         review:
@@ -88,6 +105,7 @@ const NotePage = () => {
                         id="notes"
                         rows="5"
                     ></textarea>
+                    <BookMenu book={book} />
                 </div>
                 <div className="d-flex justify-content-end mt-5">
                     <button type="submit" className="note-button">

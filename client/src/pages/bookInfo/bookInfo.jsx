@@ -6,6 +6,7 @@ import "../bookInfo/bookInfo.css";
 const BookInfo = () => {
     const { title } = useParams();
     const [book, setBook] = useState({});
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,6 +23,27 @@ const BookInfo = () => {
 
         fetchData();
     }, []);
+
+    const handleEdit = async () => {
+        if (isEditing) {
+            try {
+                await axios.put(
+                    `http://localhost:3001/api/books/${title}`,
+                    book
+                );
+                alert("Success!");
+            } catch (error) {
+                console.error("An error occurred while updating data: ", error);
+            }
+        }
+        setIsEditing(!isEditing);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setBook({ ...book, [name]: value });
+        console.log("Updated Book:", book);
+    };
 
     return (
         <section className="display note-page d-flex flex-md-row flex-sm-column justify-content-center w-75 mx-auto mt-5">
@@ -41,10 +63,12 @@ const BookInfo = () => {
                     </label>
                     <textarea
                         value={book.review}
+                        onChange={handleChange}
                         className="rounded border-0 p-2"
                         name="review"
                         id="review"
                         rows="3"
+                        readOnly={!isEditing}
                     ></textarea>
                 </div>
                 <div className="d-flex flex-column">
@@ -53,10 +77,12 @@ const BookInfo = () => {
                     </label>
                     <textarea
                         value={book.quotes}
+                        onChange={handleChange}
                         className="rounded border-0 p-2"
                         name="quotes"
                         id="quotes"
                         rows="5"
+                        readOnly={!isEditing}
                     ></textarea>
                 </div>
                 <div className="d-flex flex-column">
@@ -65,15 +91,21 @@ const BookInfo = () => {
                     </label>
                     <textarea
                         value={book.notes}
+                        onChange={handleChange}
                         className="rounded border-0 p-2"
                         name="notes"
                         id="notes"
                         rows="5"
+                        readOnly={!isEditing}
                     ></textarea>
                 </div>
                 <div className="d-flex justify-content-end mt-5">
-                    <button className="note-button">
-                        edit
+                    <button
+                        type="button"
+                        onClick={handleEdit}
+                        className="note-button"
+                    >
+                        {isEditing ? "update" : "edit"}
                     </button>
                 </div>
             </form>

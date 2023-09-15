@@ -53,39 +53,27 @@ bookRouter.get("/:title", async (req, res) => {
     }
 });
 
-bookRouter.put("/update/:title", async (req, res, next) => {
+bookRouter.put("/:title", async (req, res) => {
     const { title } = req.params;
-    const { category, update } = req.body;
+    const updatedData = req.body;
+
     try {
-        let updatedField = {};
-
-        if (category === "category") {
-            updatedField = { category: update };
-        } else if (category === "notes") {
-            updatedField = { notes: update };
-        } else if (category === "quotes") {
-            updatedField = { quotes: update };
-        } else if (category === "review") {
-            updatedField = { review: update };
-        } else {
-            res.status(400).send("Cannot update category");
-            return; // Return early to avoid further execution
-        }
-
-        const result = await Book.updateOne(
-            { title: title },
-            { $set: updatedField }
+        const book = await Book.findOneAndUpdate(
+            { title: decodeURIComponent(title) },
+            updatedData,
+            { new: true }
         );
 
-        if (result.nModified === 0) {
-            res.status(404).send("Book not found or no changes made.");
-            return;
+        if (!book) {
+            return res.status(404).json({ message: "Book not found" });
         }
 
-        const book = await Book.findOne({ title: title });
         res.json(book);
     } catch (error) {
-        next(error);
+        console.error(error);
+        res.status(500).json({
+            message: "An error occurred while updating the book",
+        });
     }
 });
 

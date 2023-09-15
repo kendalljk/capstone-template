@@ -3,24 +3,33 @@ import { useNavigate } from "react-router-dom";
 
 const ShelfDisplay = ({ book }) => {
     const navigate = useNavigate();
-    const [myBook, setMyBook] = useState(book);
-    console.log("Book", book);
+    const [hover, setHover] = useState(false);
 
-  const directToNote = () => {
-      const { category, title } = book;
+    const directToNote = () => {
+        const { category, title } = book;
         if (category === "tbr" || category === "reading") {
-            navigate(`/note/${book.title}`, { state: { myBook } });
+            navigate(`/note/${book.title}`, { state: { book } });
         } else if (category === "read") {
             navigate(`/book/${book.title}`);
         } else {
             alert("Error");
         }
-    };
+  };
+
+      const handleMouseEnter = () => {
+          setHover(true);
+      };
+
+      const handleMouseLeave = () => {
+          setHover(false);
+      };
 
     return (
         <div
             onClick={directToNote}
-            className="d-flex flex-column align-items-center w-100"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className="d-flex flex-column align-items-center w-100 hover"
         >
             <img
                 src={`http://covers.openlibrary.org/b/id/${book.cover}-L.jpg`}

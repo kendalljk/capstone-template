@@ -24,7 +24,6 @@ const Shelf = () => {
     }, []);
 
     const readingBooks = books.filter((book) => book.category === "reading");
-    console.log("Reading books", readingBooks);
     const readBooks = books.filter((book) => book.category === "read");
 
     return (

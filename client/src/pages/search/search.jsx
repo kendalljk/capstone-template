@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./search.css";
-import axios from "axios";
+import SearchDisplay from "../../components/SearchDisplay";
 
 const Search = () => {
     const { query } = useParams();
-    const navigate = useNavigate();
     const [searchType, setSearchType] = useState("both");
     const [inputValue, setInputValue] = useState(query || "");
     const [searchValue, setSearchValue] = useState("");
-    const [category, setCategory] = useState("");
     const [books, setBooks] = useState([]);
-    const [mybook, setMyBook] = useState({});
 
     useEffect(() => {
         if (query) {
@@ -45,42 +42,6 @@ const Search = () => {
             setBooks(booksWithCovers);
         } catch (err) {
             console.error("Failed to fetch data:", err);
-        }
-    };
-
-    const handleCategory = async (e, book) => {
-        const newBook = {
-            author: book.author,
-            title: book.title,
-            cover: book.coverI,
-            category: e.target.value,
-        };
-
-        setMyBook(newBook);
-        if (newBook.category === "read") {
-            navigate(`/note/${book.title}`, { state: { myBook: newBook } });
-        } else {
-            try {
-                console.log(newBook);
-                const response = await axios.post(
-                    "http://localhost:3001/api/books",
-                    newBook
-                );
-
-                if (response.status === 201) {
-                    console.log("Book successfully saved to MongoDB.");
-                } else {
-                    console.log("Failed to save the book.");
-                }
-            } catch (error) {
-                console.error("An error occurred:", error);
-            }
-        }
-
-        if (newBook.category === "reading") {
-            navigate('/shelf');
-        } else if (newBook.category === "tbr") {
-            navigate("/tbr");
         }
     };
 
@@ -139,61 +100,7 @@ const Search = () => {
                 </div>
             </form>
 
-            {books && (
-                <>
-                    <div className="d-flex w-100 mt-4">
-                        {searchValue && (
-                            <h2 className="mx-auto w-50 fw-normal search-display font-italic fst-italic">
-                                {searchValue}...
-                            </h2>
-                        )}
-                    </div>
-                    <div className="container w-50 sm-w-100">
-                        <div className="row">
-                            {books.map((book, index) => (
-                                <div key={index} className="col-12 my-4">
-                                    <div className="d-flex flex-column flex-md-row">
-                                        <div className="sm-w-100">
-                                            <img
-                                                src={`http://covers.openlibrary.org/b/id/${book.coverI}-M.jpg`}
-                                                alt={`${book.title} cover`}
-                                            />
-                                        </div>
-                                        <div className="flex-grow-1 ms-md-4">
-                                            <h2 className="fst-italic">
-                                                {book.title}
-                                            </h2>
-                                            <h4>by {book.author}</h4>
-                                            <div className="py-4">
-                                                <select
-                                                    className="book-menu"
-                                                    value={category}
-                                                    onChange={(e) =>
-                                                        handleCategory(e, book)
-                                                    }
-                                                >
-                                                    <option defaultValue="">
-                                                        Add to Shelf
-                                                    </option>
-                                                    <option value="tbr">
-                                                        Want to Read
-                                                    </option>
-                                                    <option value="reading">
-                                                        Reading
-                                                    </option>
-                                                    <option value="read">
-                                                        Read
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </>
-            )}
+            {books && <SearchDisplay books={books} searchValue={searchValue} />}
         </section>
     );
 };
