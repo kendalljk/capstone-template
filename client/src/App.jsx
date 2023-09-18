@@ -24,7 +24,7 @@ function UseLocationEffect() {
         display.classList.toggle("landing-background", isLandingPage);
     }, [location]);
 
-    return null; // toggles between two alternating background images- hook instead?
+    return null; 
 }
 
 function App() {

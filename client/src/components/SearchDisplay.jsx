@@ -1,18 +1,18 @@
 import React, {useState} from "react";
 import BookMenu from "./BookMenu";
 
-const SearchDisplay = ({ books, searchValue }) => {
+const SearchDisplay = ({ books, searchValue, isLoading }) => {
 
     return (
         <div>
             <div className="d-flex w-100 mt-4">
-                {searchValue && (
-                    <h2 className="mx-auto w-50 fw-normal search-display font-italic fst-italic">
+                {!isLoading && searchValue && (
+                    <h2 className="mx-auto w-75 fw-normal search-display font-italic fst-italic">
                         {searchValue}...
                     </h2>
                 )}
             </div>
-            <div className="container w-50 sm-w-100">
+            <div className="container w-75 sm-w-100">
                 <div className="row">
                     {books.map((book, index) => (
                         <div key={index} className="col-12 my-4">
@@ -21,14 +21,15 @@ const SearchDisplay = ({ books, searchValue }) => {
                                     <img
                                         src={`http://covers.openlibrary.org/b/id/${book.coverI}-M.jpg`}
                                         alt={`${book.title} cover`}
+                                        height="200rem"
+                                        width="150rem"
                                     />
                                 </div>
                                 <div className="flex-grow-1 ms-md-4">
                                     <h2 className="fst-italic">{book.title}</h2>
                                     <h4>by {book.author}</h4>
                                     <div className="py-4">
-                                        <BookMenu book={book}
-                                        />
+                                        <BookMenu book={book} />
                                     </div>
                                 </div>
                             </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./search.css";
 import SearchDisplay from "../../components/SearchDisplay";
+import LoadingSpinner from '../../components/loadingSpinner/LoadingSpinner'
 
 const Search = () => {
     const { query } = useParams();
@@ -9,15 +10,19 @@ const Search = () => {
     const [inputValue, setInputValue] = useState(query || "");
     const [searchValue, setSearchValue] = useState("");
     const [books, setBooks] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (query) {
+            setIsLoading(true);
             searchForBooks(query, searchType);
             setSearchValue(query);
         }
-    }, [query, inputValue]);
+    }, [query]);
 
     const searchForBooks = async (searchQuery, type) => {
+        setBooks([]);
         console.log(`Search by ${type}: ${searchQuery}`);
 
         let apiUrl;
@@ -40,15 +45,18 @@ const Search = () => {
             const booksWithCovers = booksData.filter((book) => book.coverI);
 
             setBooks(booksWithCovers);
+            setIsLoading(false);
         } catch (err) {
             console.error("Failed to fetch data:", err);
         }
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+      e.preventDefault();
+      setIsLoading(true);
+      navigate(`/search/${inputValue}`);
         setSearchValue(inputValue);
-        searchForBooks(inputValue, searchType);
+        console.log("search value", searchValue);
         console.log("Returned books", books);
     };
 
@@ -99,8 +107,8 @@ const Search = () => {
                     <button className="search-button">search</button>
                 </div>
             </form>
-
-            {books && <SearchDisplay books={books} searchValue={searchValue} />}
+            {isLoading && <LoadingSpinner />}
+        {books && <SearchDisplay books={books} searchValue={searchValue} isLoading={isLoading} />}
         </section>
     );
 };

@@ -56,10 +56,10 @@ const BookMenu = ({ book, addCategory }) => {
         <div className="">
             <select
                 className="book-menu px-4 fs-5 fw-normal rounded"
-                value={book.category}
+                value={book.category || ""}
                 onChange={handleCategoryChange}
             >
-                <option value="" disabled selected>
+                <option value="" disabled>
                     {displayValue}
                 </option>
                 <option value="tbr">Want to Read</option>
