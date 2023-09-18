@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "../bookInfo/bookInfo.css";
 
@@ -7,6 +7,8 @@ const BookInfo = () => {
     const { title } = useParams();
     const [book, setBook] = useState({});
     const [isEditing, setIsEditing] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,6 +47,23 @@ const BookInfo = () => {
         console.log("Updated Book:", book);
     };
 
+    const deleteNote = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.delete(
+                `http://localhost:3001/api/books/${title}`
+            );
+            if (response.status === 204) {
+                console.log("Book deleted book.");
+                navigate("/shelf");
+            } else {
+                console.log("Failed to delete the book.");
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+    };
+
     return (
         <section className="display note-page d-flex flex-md-row flex-sm-column justify-content-center w-75 mx-auto mt-5">
             <div className="col-md-6 col-12 d-flex justify-content-center">
@@ -54,9 +73,14 @@ const BookInfo = () => {
                     alt={`${book.title} cover`}
                 />
             </div>
-            <form className="col-md-6 col-12">
+            <form className="col-md-6 col-12 position-relative">
                 <h2 className="fst-italic">{book.title}</h2>
                 <p className="fs-4 fw-medium">by {book.author}</p>
+                <i
+                    onClick={deleteNote}
+                    className="fa fa-times hover position-absolute top-0 end-0 text-danger fs-3 m-2"
+                    aria-hidden="true"
+                ></i>
                 <div className="d-flex flex-column">
                     <label htmlFor="review" className="fs-4 fw-medium">
                         review:
