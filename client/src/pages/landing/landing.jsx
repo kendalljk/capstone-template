@@ -1,15 +1,15 @@
 import React from "react";
-import '../landing/landing.css'
-import bookImage from "../../images/bookImage.png"
+import "../landing/landing.css";
+import bookImage from "../../images/bookImage.png";
 import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const directToSearch = (e) => {
-    e.preventDefault();
-    navigate(`/search`)
-  }
+    const directToSearch = (e) => {
+        e.preventDefault();
+        navigate(`/search`);
+    };
 
     return (
         <section className="display landing d-flex justify-content-center w-100">
@@ -20,7 +20,7 @@ const Landing = () => {
                     className="h-75 mw-100 mx-5"
                 />
             </div>
-            <div className="d-flex flex-column justify-content-center mx-5 mw-50">
+            <div className="d-flex flex-column justify-content-center mx-5">
                 <h1 className="app-name display-4 display-xs-6 display-sm-5 display-md-3 display-lg-2">
                     SHELF HELP
                 </h1>

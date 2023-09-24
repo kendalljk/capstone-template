@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -13,6 +13,7 @@ import Search from "./pages/search/search";
 import "./App.css";
 import NotePage from "./pages/notepage/notepage";
 import BookInfo from "./pages/bookInfo/bookInfo";
+import SignUpNav from "./components/SignUpNav";
 
 function UseLocationEffect() {
     const location = useLocation();
@@ -24,15 +25,17 @@ function UseLocationEffect() {
         display.classList.toggle("landing-background", isLandingPage);
     }, [location]);
 
-    return null; 
+    return null;
 }
 
 function App() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     return (
         <Router>
             <div className="App">
                 <UseLocationEffect />
-                <Navigation />
+                {!isLoggedIn ? <Navigation /> : <SignUpNav />}
                 <Routes>
                     <Route path="/" exact element={<Landing />} />
                     <Route path="/shelf" element={<Shelf />} />

@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
@@ -7,14 +7,13 @@ import FormControl from "react-bootstrap/FormControl";
 import logo from "../images/logo.png";
 
 function Navigation() {
-    const location = useLocation();
     const navigate = useNavigate();
     const [searchValue, setSearchValue] = useState("");
 
     const handleSearch = (e) => {
         e.preventDefault();
-      navigate(`/search/${searchValue}`);
-      setSearchValue("")
+        navigate(`/search/${searchValue}`);
+        setSearchValue("");
     };
 
     return (
