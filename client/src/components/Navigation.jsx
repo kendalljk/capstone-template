@@ -4,9 +4,12 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
+import Dropdown from "react-bootstrap/Dropdown";
 import logo from "../images/logo.png";
+import { signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
 
-function Navigation() {
+function Navigation({ setLoggedIn }) {
     const navigate = useNavigate();
     const [searchValue, setSearchValue] = useState("");
 
@@ -15,6 +18,18 @@ function Navigation() {
         navigate(`/search/${searchValue}`);
         setSearchValue("");
     };
+
+    function handleSignOut() {
+        signOut(auth)
+            .then(() => {
+                console.log("Signed out successfully");
+                setLoggedIn(false);
+                navigate("/");
+            })
+            .catch((error) => {
+                console.error("Error signing out: ", error);
+            });
+    }
 
     return (
         <Navbar
@@ -88,6 +103,26 @@ function Navigation() {
                             onChange={(e) => setSearchValue(e.target.value)}
                         />
                     </Form>
+                    <div className="d-flex align-items-center mx-5">
+                        <Dropdown className="d-flex align-items-center ml-5">
+                            <Dropdown.Toggle
+                                as="a"
+                                id="dropdown-basic"
+                                bsPrefix="p-0 border-0 bg-transparent"
+                            >
+                                <i
+                                    className="fa fa-user fs-4"
+                                    aria-hidden="true"
+                                ></i>
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu align="end" className="mt-3">
+                                <Dropdown.Item onClick={handleSignOut}>
+                                    Sign Out
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </div>
                 </div>
             </Navbar.Collapse>
         </Navbar>

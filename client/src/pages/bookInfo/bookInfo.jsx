@@ -15,7 +15,7 @@ const BookInfo = () => {
             try {
                 const encodedTitle = encodeURIComponent(title);
                 const response = await axios.get(
-                    `http://localhost:3001/api/books/${encodedTitle}`
+                    `http://localhost:3001/api/books/${encodedTitle}?userId=${userId}`
                 );
                 setBook(response.data);
             } catch (error) {

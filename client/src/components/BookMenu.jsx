@@ -18,6 +18,7 @@ const BookMenu = ({ book, addCategory }) => {
     const handleCategoryChange = async (e) => {
         const newCategory = e.target.value;
         let newBook = {
+            userId: book.userId,
             author: book.author,
             title: book.title,
             cover: book.coverI,
@@ -41,7 +42,7 @@ const BookMenu = ({ book, addCategory }) => {
                     } else if (newCategory === "tbr") {
                         navigate("/tbr");
                     } else {
-                      alert('Error')
+                        alert("Error");
                     }
                 }
             } catch (error) {

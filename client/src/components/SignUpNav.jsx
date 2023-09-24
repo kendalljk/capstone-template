@@ -7,9 +7,9 @@ import logo from "../images/logo.png";
 import LogIn from "../components/LogIn/LogIn";
 import NewUser from "../components/NewUser/NewUser";
 
-const SignUpNav = () => {
+const SignUpNav = ({ setLoggedIn }) => {
     const [showModal, setShowModal] = useState(false);
-    const [modalType, setModalType] = useState(""); // either 'login' or 'signup'
+    const [modalType, setModalType] = useState("");
 
     const handleModalOpen = (type) => {
         setModalType(type);
@@ -77,7 +77,17 @@ const SignUpNav = () => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {modalType === "login" ? <LogIn /> : <NewUser />}
+                    {modalType === "login" ? (
+                        <LogIn
+                            handleModalClose={handleModalClose}
+                            setLoggedIn={setLoggedIn}
+                        />
+                    ) : (
+                        <NewUser
+                            handleModalClose={handleModalClose}
+                            setLoggedIn={setLoggedIn}
+                        />
+                    )}
                 </Modal.Body>
             </Modal>
         </div>
