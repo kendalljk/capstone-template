@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { UserContext } from "../App";
 
 const BookMenu = ({ book, addCategory }) => {
+  const { user } = useContext(UserContext);
     const location = useLocation();
     const navigate = useNavigate();
-    const [displayValue, setDisplayValue] = useState("Update Status");
+  const [displayValue, setDisplayValue] = useState("Update Status");
+
+  console.log(user)
 
     useEffect(() => {
         if (location.pathname.startsWith("/search/")) {
@@ -18,12 +22,14 @@ const BookMenu = ({ book, addCategory }) => {
     const handleCategoryChange = async (e) => {
         const newCategory = e.target.value;
         let newBook = {
-            userId: book.userId,
+            userId: user.uid,
             author: book.author,
             title: book.title,
             cover: book.coverI,
             category: newCategory,
-        };
+      };
+
+      console.log(newBook)
 
         if (location.pathname.startsWith("/search")) {
             try {

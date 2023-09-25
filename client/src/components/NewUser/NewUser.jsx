@@ -1,31 +1,34 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import "../NewUser/newUser.css";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
 
-const NewUser = ({handleModalClose, setShowModal}) => {
+const NewUser = ({ handleModalClose }) => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const handleRegistration = async (e) => {
         e.preventDefault();
 
+        const newUser = {
+            username,
+            email,
+            password,
+            firstName,
+            lastName,
+        };
+
         try {
-            const userCredential = await createUserWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
-            const user = userCredential.user;
-          console.log("User registered:", user);
-          handleModalClose()
-          navigate('/shelf')
+            await axios.post("http://localhost:3001/api/users/register", newUser);
+
+            console.log("User registered:", newUser);
+            handleModalClose();
+            navigate("/shelf");
         } catch (registrationError) {
             console.error(
                 "Error during registration:",

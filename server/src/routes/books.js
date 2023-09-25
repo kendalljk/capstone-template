@@ -8,7 +8,7 @@ bookRouter.post("/", async (req, res, next) => {
     const { title, author, cover, category, review, quotes, notes, userId } =
         req.body;
 
-    console.log(title);
+    console.log('req.body', req.body);
 
     const user = await User.findById(userId);
     if (!user) {

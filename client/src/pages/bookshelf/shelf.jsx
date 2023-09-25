@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ShelfDisplay from "../../components/ShelfDisplay";
 import "../bookshelf/shelf.css";
+import { UserContext } from "../../App";
 
 const Shelf = () => {
+    const { user } = useContext(UserContext);
     const [books, setBooks] = useState([]);
     const navigate = useNavigate();
 
@@ -12,7 +14,7 @@ const Shelf = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    "http://localhost:3001/api/books"
+                    `http://localhost:3001/api/books?userId=${user._id}`
                 );
                 setBooks(response.data);
             } catch (error) {
@@ -21,7 +23,7 @@ const Shelf = () => {
         };
 
         fetchData();
-    }, []);
+    }, [user]);
 
     const readingBooks = books.filter((book) => book.category === "reading");
     const readBooks = books.filter((book) => book.category === "read");

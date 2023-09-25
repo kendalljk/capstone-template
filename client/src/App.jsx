@@ -36,16 +36,14 @@ function App() {
     const [LoggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
-    if (user) {
-        console.log(user);
-    }
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setLoggedIn(true);
+                setUser(user);
             } else {
                 setLoggedIn(false);
+                setUser(null);
             }
         });
 
