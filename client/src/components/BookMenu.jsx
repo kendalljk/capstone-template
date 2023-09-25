@@ -9,7 +9,7 @@ const BookMenu = ({ book, addCategory }) => {
     const navigate = useNavigate();
   const [displayValue, setDisplayValue] = useState("Update Status");
 
-  console.log(user)
+  console.log("Menu user", user)
 
     useEffect(() => {
         if (location.pathname.startsWith("/search/")) {
@@ -22,7 +22,7 @@ const BookMenu = ({ book, addCategory }) => {
     const handleCategoryChange = async (e) => {
         const newCategory = e.target.value;
         let newBook = {
-            userId: user.uid,
+            userId: user,
             author: book.author,
             title: book.title,
             cover: book.coverI,

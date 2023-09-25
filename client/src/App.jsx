@@ -14,8 +14,7 @@ import "./App.css";
 import NotePage from "./pages/notepage/notepage";
 import BookInfo from "./pages/bookInfo/bookInfo";
 import SignUpNav from "./components/SignUpNav";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./config/firebase";
+import { checkLoginStatus } from "./utility/api";
 
 const UserContext = createContext();
 
@@ -36,18 +35,29 @@ function App() {
     const [LoggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setLoggedIn(true);
-                setUser(user);
-            } else {
-                setLoggedIn(false);
-                setUser(null);
-            }
-        });
+  useEffect(() => {
+      const token = localStorage.getItem("token");
 
-        return () => unsubscribe();
+        if (token) {
+          checkLoginStatus()
+                .then((data) => {
+                  console.log("data", data)
+                    if (data.loggedIn) {
+                        setLoggedIn(true);
+                      setUser(data.userId);
+                        console.log("App user:", user);
+                    } else {
+                        localStorage.removeItem("token");
+                        setLoggedIn(false);
+                        setUser(null);
+                    }
+                })
+                .catch((err) => {
+                    console.error("Error checking login status", err);
+                    setLoggedIn(false);
+                    setUser(null);
+                });
+        }
     }, []);
 
     return (

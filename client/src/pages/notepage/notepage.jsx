@@ -40,7 +40,7 @@ const NotePage = () => {
                 checkDuplicates.data.author === myNote.author
             ) {
                 if (checkDuplicates.data.category === myNote.category) {
-                    alert("You already have that book on your shelf!");
+                    alert("You  have that book on your shelf!");
                     console.error(
                         "A book with the same title, author, and category already exists."
                     );
@@ -87,8 +87,8 @@ const NotePage = () => {
                 )}`
             );
             if (response.status === 204) {
-              console.log("Book deleted book.");
-              navigate('/tbr')
+                console.log("Book deleted book.");
+                navigate("/tbr");
             } else {
                 console.log("Failed to delete the book.");
             }

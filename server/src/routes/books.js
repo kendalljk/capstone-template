@@ -4,32 +4,45 @@ import { Book, User } from "../models/index";
 const bookRouter = Router();
 
 bookRouter.post("/", async (req, res, next) => {
-    console.log("Received POST request for book");
-    const { title, author, cover, category, review, quotes, notes, userId } =
-        req.body;
-
-    console.log('req.body', req.body);
-
-    const user = await User.findById(userId);
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
-    }
-
-    const book = new Book({
-        title,
-        author,
-        cover,
-        category,
-        review,
-        quotes,
-        notes,
-        userId,
-    });
     try {
+        const {
+            title,
+            author,
+            cover,
+            category,
+            review,
+            quotes,
+            notes,
+            userId,
+        } = req.body;
+
+        console.log("Received POST request for book");
+        console.log("req.body", req.body);
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const book = new Book({
+            title,
+            author,
+            cover,
+            category,
+            review,
+            quotes,
+            notes,
+            user: user._id,
+        });
         await book.save();
-        res.status(201).json(book);
+
+        user.books.push(book._id);
+        await user.save();
+
+        return res.status(201).json(book);
     } catch (error) {
-        res.status(500).send(error);
+        console.error("Error creating book:", error);
+        next(error);
     }
 });
 

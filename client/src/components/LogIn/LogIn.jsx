@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../LogIn/logIn.css";
-import NewUser from "../NewUser/NewUser";
 import { UserContext } from "../../App";
 
 const LogIn = ({ handleModalClose, setLoggedIn }) => {
@@ -14,19 +14,38 @@ const LogIn = ({ handleModalClose, setLoggedIn }) => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:3001/api/users/login", {
-                email,
-                password,
-            });
-            const { token } = response.data;
-            localStorage.setItem("token", token);
-            setUser(email);
-            setLoggedIn(true);
-            navigate("/shelf");
-            handleModalClose();
+            const response = await axios.post(
+                "http://localhost:3001/api/users/login",
+                {
+                    email,
+                    password,
+                }
+            );
+
+            if (response.data && response.data.token) {
+                const { token, user } = response.data;
+                localStorage.setItem("token", token);
+
+                setUser(user);
+
+                setLoggedIn(true);
+                navigate("/shelf");
+                handleModalClose();
+            } else {
+                setError("Login failed. Please try again.");
+            }
         } catch (error) {
-            console.error("Failed to log in:", error.message);
-            setError(error.message);
+            console.error("Failed to log in:", error);
+
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
+                setError(error.response.data.message);
+            } else {
+                setError("An error occurred during login. Please try again.");
+            }
         }
     };
 

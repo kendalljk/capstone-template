@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import "../NewUser/newUser.css";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../App";
 
-const NewUser = ({ handleModalClose }) => {
+const NewUser = ({ handleModalClose, setLoggedIn }) => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [error, setError] = useState("");
+    const { setUser } = useContext(UserContext);
+
     const navigate = useNavigate();
 
     const handleRegistration = async (e) => {
@@ -24,17 +27,48 @@ const NewUser = ({ handleModalClose }) => {
         };
 
         try {
-            await axios.post("http://localhost:3001/api/users/register", newUser);
-
+            await axios.post(
+                "http://localhost:3001/api/users/register",
+                newUser
+            );
             console.log("User registered:", newUser);
-            handleModalClose();
-            navigate("/shelf");
+
+            const response = await axios.post(
+                "http://localhost:3001/api/users/login",
+                {
+                    email,
+                    password,
+                }
+            );
+
+            if (response.data && response.data.token) {
+                const { token, user } = response.data;
+                localStorage.setItem("token", token);
+
+                setUser(user);
+
+                setLoggedIn(true);
+                navigate("/shelf");
+                handleModalClose();
+            } else {
+                setError("Login after registration failed. Please try again.");
+            }
         } catch (registrationError) {
             console.error(
                 "Error during registration:",
                 registrationError.message
             );
-            setError(registrationError.message);
+            if (
+                registrationError.response &&
+                registrationError.response.data &&
+                registrationError.response.data.message
+            ) {
+                setError(registrationError.response.data.message);
+            } else {
+                setError(
+                    "An error occurred during registration. Please try again."
+                );
+            }
         }
     };
 

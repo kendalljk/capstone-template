@@ -6,8 +6,6 @@ import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import Dropdown from "react-bootstrap/Dropdown";
 import logo from "../images/logo.png";
-import { signOut } from "firebase/auth";
-import { auth } from "../config/firebase";
 
 function Navigation({ setLoggedIn }) {
     const navigate = useNavigate();
@@ -20,15 +18,9 @@ function Navigation({ setLoggedIn }) {
     };
 
     function handleSignOut() {
-        signOut(auth)
-            .then(() => {
-                console.log("Signed out successfully");
-                setLoggedIn(false);
-                navigate("/");
-            })
-            .catch((error) => {
-                console.error("Error signing out: ", error);
-            });
+        localStorage.removeItem("token");
+        setLoggedIn(false);
+        navigate("/");
     }
 
     return (

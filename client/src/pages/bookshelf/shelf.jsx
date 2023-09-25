@@ -10,11 +10,13 @@ const Shelf = () => {
     const [books, setBooks] = useState([]);
     const navigate = useNavigate();
 
+    console.log("shelf user", user);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:3001/api/books?userId=${user._id}`
+                    `http://localhost:3001/api/books`
                 );
                 setBooks(response.data);
             } catch (error) {
