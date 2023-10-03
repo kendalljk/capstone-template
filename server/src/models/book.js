@@ -21,6 +21,7 @@ const bookSchema = new mongoose.Schema(
         category: {
             required: true,
             type: String,
+            enum: ["reading", "read", "tbr"],
         },
         review: {
             type: String,

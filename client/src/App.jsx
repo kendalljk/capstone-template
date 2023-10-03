@@ -14,7 +14,7 @@ import "./App.css";
 import NotePage from "./pages/notepage/notepage";
 import BookInfo from "./pages/bookInfo/bookInfo";
 import SignUpNav from "./components/SignUpNav";
-import { checkLoginStatus } from "./utility/api";
+
 
 const UserContext = createContext();
 
@@ -35,30 +35,29 @@ function App() {
     const [LoggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
-  useEffect(() => {
-      const token = localStorage.getItem("token");
+useEffect(() => {
+    const checkUserSession = () => {
+        const token = localStorage.getItem("token");
 
         if (token) {
-          checkLoginStatus()
-                .then((data) => {
-                  console.log("data", data)
-                    if (data.loggedIn) {
-                        setLoggedIn(true);
-                      setUser(data.userId);
-                        console.log("App user:", user);
-                    } else {
-                        localStorage.removeItem("token");
-                        setLoggedIn(false);
-                        setUser(null);
-                    }
-                })
-                .catch((err) => {
-                    console.error("Error checking login status", err);
-                    setLoggedIn(false);
-                    setUser(null);
-                });
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
         }
-    }, []);
+    };
+
+    checkUserSession();
+}, []);
+
+useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+
+    if (storedToken) {
+        setLoggedIn(true);
+        setUser(user);
+    }
+}, []);
 
     return (
         <UserContext.Provider value={{ user, setUser }}>

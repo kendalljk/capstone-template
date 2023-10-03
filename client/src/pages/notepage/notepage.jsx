@@ -28,29 +28,35 @@ const NotePage = () => {
 
     const saveNote = async (event) => {
         event.preventDefault();
+        const token = localStorage.getItem("token");
+
         try {
             const checkDuplicates = await axios.get(
                 `http://localhost:3001/api/books/${encodeURIComponent(
                     myNote.title
-                )}`
+                )}`,
+                { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            if (
-                checkDuplicates.data &&
-                checkDuplicates.data.author === myNote.author
-            ) {
-                if (checkDuplicates.data.category === myNote.category) {
-                    alert("You  have that book on your shelf!");
-                    console.error(
-                        "A book with the same title, author, and category already exists."
-                    );
+            if (checkDuplicates.data) {
+              console.log("duplicates", checkDuplicates)
+              if (
+                    checkDuplicates.data.author === myNote.author &&
+                    checkDuplicates.data.title === myNote.title &&
+                    checkDuplicates.data.category === myNote.category &&
+                    checkDuplicates.data.notes === myNote.notes &&
+                    checkDuplicates.data.quotes === myNote.quotes &&
+                    checkDuplicates.data.review === myNote.review
+                ) {
+                  navigate("/shelf")
                     return;
                 } else {
                     const updateResponse = await axios.put(
                         `http://localhost:3001/api/books/${encodeURIComponent(
                             myNote.title
                         )}`,
-                        myNote
+                        myNote,
+                        { headers: { Authorization: `Bearer ${token}` } }
                     );
                     if (updateResponse.status === 200) {
                         console.log("Book successfully updated in MongoDB.");
@@ -64,7 +70,8 @@ const NotePage = () => {
 
             const response = await axios.post(
                 "http://localhost:3001/api/books",
-                myNote
+                myNote,
+                { headers: { Authorization: `Bearer ${token}` } }
             );
 
             if (response.status === 201) {
@@ -80,20 +87,34 @@ const NotePage = () => {
 
     const deleteNote = async (event) => {
         event.preventDefault();
+        const token = localStorage.getItem("token");
         try {
             const response = await axios.delete(
                 `http://localhost:3001/api/books/${encodeURIComponent(
                     myNote.title
-                )}`
+                )}`,
+                { headers: { Authorization: `Bearer ${token}` } }
             );
             if (response.status === 204) {
                 console.log("Book deleted book.");
-                navigate("/tbr");
+                if (book.category === "tbr") {
+                    navigate("/tbr");
+                } else {
+                    navigate("/shelf");
+                }
             } else {
                 console.log("Failed to delete the book.");
             }
         } catch (error) {
             console.error("An error occurred:", error);
+        }
+    };
+
+    const exitNote = () => {
+        if (book.category === "tbr") {
+            navigate("/tbr");
+        } else {
+            navigate("/shelf");
         }
     };
 
@@ -113,8 +134,8 @@ const NotePage = () => {
                 <h2 className="fst-italic">{book.title}</h2>
                 <p className="fs-4 fw-medium">by {book.author}</p>
                 <i
-                    onClick={deleteNote}
-                    className="fa fa-times hover position-absolute top-0 end-0 text-danger fs-3 m-2"
+                    onClick={exitNote}
+                    className="fa fa-times hover position-absolute top-0 end-0 fs-3 m-2"
                     aria-hidden="true"
                 ></i>
                 <div className="d-flex flex-column">
@@ -158,6 +179,13 @@ const NotePage = () => {
                     <BookMenu book={myNote} addCategory={addCategory} />
                 </div>
                 <div className="d-flex justify-content-end mt-5">
+                    <button
+                        type="button"
+                        onClick={deleteNote}
+                        className="note-button mx-5 bg-danger-subtle text-danger font-bold"
+                    >
+                        delete
+                    </button>
                     <button type="submit" className="note-button">
                         save
                     </button>

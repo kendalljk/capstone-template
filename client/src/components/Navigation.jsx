@@ -19,6 +19,7 @@ function Navigation({ setLoggedIn }) {
 
     function handleSignOut() {
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         setLoggedIn(false);
         navigate("/");
     }

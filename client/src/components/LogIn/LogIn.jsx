@@ -15,16 +15,18 @@ const LogIn = ({ handleModalClose, setLoggedIn }) => {
         e.preventDefault();
         try {
             const response = await axios.post(
-                "http://localhost:3001/api/users/login",
+                "http://localhost:3001/api/auth/login",
                 {
-                    email,
-                    password,
+                    email: email,
+                    password: password,
                 }
             );
+            console.log("response", response);
 
             if (response.data && response.data.token) {
                 const { token, user } = response.data;
                 localStorage.setItem("token", token);
+                localStorage.setItem("user", user);
 
                 setUser(user);
 

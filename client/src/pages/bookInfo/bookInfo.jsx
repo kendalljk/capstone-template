@@ -14,8 +14,16 @@ const BookInfo = () => {
         const fetchData = async () => {
             try {
                 const encodedTitle = encodeURIComponent(title);
+
+                const token = localStorage.getItem("token");
+
                 const response = await axios.get(
-                    `http://localhost:3001/api/books/${encodedTitle}?userId=${userId}`
+                    `http://localhost:3001/api/books/${encodedTitle}`,
+                    {
+                        headers: {
+                            authorization: `Bearer ${token}`,
+                        },
+                    }
                 );
                 setBook(response.data);
             } catch (error) {
@@ -27,13 +35,21 @@ const BookInfo = () => {
     }, []);
 
     const handleEdit = async () => {
+        const token = localStorage.getItem("token");
+
         if (isEditing) {
             try {
                 await axios.put(
                     `http://localhost:3001/api/books/${title}`,
-                    book
+                    book,
+                    {
+                        headers: {
+                            authorization: `Bearer ${token}`,
+                        },
+                    }
                 );
-                alert("Success!");
+              alert("Success!");
+              navigate("/shelf")
             } catch (error) {
                 console.error("An error occurred while updating data: ", error);
             }
@@ -49,20 +65,39 @@ const BookInfo = () => {
 
     const deleteNote = async (event) => {
         event.preventDefault();
+        const token = localStorage.getItem("token");
+
         try {
             const response = await axios.delete(
-                `http://localhost:3001/api/books/${title}`
+                `http://localhost:3001/api/books/${title}`,
+                {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
+                }
             );
             if (response.status === 204) {
                 console.log("Book deleted book.");
-                navigate("/shelf");
+              if (book.category === "tbr") {
+                  navigate("/tbr");
+              } else {
+                  navigate("/shelf");
+              }
             } else {
                 console.log("Failed to delete the book.");
             }
         } catch (error) {
             console.error("An error occurred:", error);
         }
-    };
+  };
+
+      const exitNote = () => {
+          if (book.category === "tbr") {
+              navigate("/tbr");
+          } else {
+              navigate("/shelf");
+          }
+      };
 
     return (
         <section className="display note-page d-flex flex-md-row flex-sm-column justify-content-center w-75 mx-auto mt-5">
@@ -77,8 +112,8 @@ const BookInfo = () => {
                 <h2 className="fst-italic">{book.title}</h2>
                 <p className="fs-4 fw-medium">by {book.author}</p>
                 <i
-                    onClick={deleteNote}
-                    className="fa fa-times hover position-absolute top-0 end-0 text-danger fs-3 m-2"
+                    onClick={exitNote}
+                    className="fa fa-times hover position-absolute top-0 end-0  fs-3 m-2"
                     aria-hidden="true"
                 ></i>
                 <div className="d-flex flex-column">
@@ -124,6 +159,13 @@ const BookInfo = () => {
                     ></textarea>
                 </div>
                 <div className="d-flex justify-content-end mt-5">
+                    <button
+                        type="button"
+                        onClick={deleteNote}
+                        className="note-button mx-5 bg-danger-subtle text-danger font-bold"
+                    >
+                        delete
+                    </button>
                     <button
                         type="button"
                         onClick={handleEdit}

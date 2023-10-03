@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../App";
 
 const BookMenu = ({ book, addCategory }) => {
-  const { user } = useContext(UserContext);
     const location = useLocation();
     const navigate = useNavigate();
-  const [displayValue, setDisplayValue] = useState("Update Status");
+    const [displayValue, setDisplayValue] = useState("Update Status");
 
-  console.log("Menu user", user)
 
     useEffect(() => {
         if (location.pathname.startsWith("/search/")) {
@@ -22,20 +19,26 @@ const BookMenu = ({ book, addCategory }) => {
     const handleCategoryChange = async (e) => {
         const newCategory = e.target.value;
         let newBook = {
-            userId: user,
             author: book.author,
             title: book.title,
-            cover: book.coverI,
+            cover: book.coverI || book.cover,
             category: newCategory,
-      };
+        };
 
-      console.log(newBook)
+        console.log(newBook);
+      const token = localStorage.getItem("token");
+      console.log("token", token)
 
         if (location.pathname.startsWith("/search")) {
             try {
                 const response = await axios.post(
                     "http://localhost:3001/api/books",
-                    newBook
+                    newBook,
+                    {
+                        headers: {
+                            authorization: `Bearer ${token}`,
+                        },
+                    }
                 );
                 if (response.status === 201) {
                     console.log("Book successfully saved to MongoDB.");

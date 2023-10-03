@@ -7,9 +7,16 @@ const TBR = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            const token = localStorage.getItem("token");
+
             try {
                 const response = await axios.get(
-                    "http://localhost:3001/api/books"
+                    "http://localhost:3001/api/books",
+                    {
+                        headers: {
+                            authorization: `Bearer ${token}`,
+                        },
+                    }
                 );
                 setBooks(response.data);
             } catch (error) {

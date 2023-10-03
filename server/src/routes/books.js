@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { Book, User } from "../models/index";
+import requireAuth from "../middleware/requireAuth";
 
 const bookRouter = Router();
 
-bookRouter.post("/", async (req, res, next) => {
+bookRouter.post("/", requireAuth, async (req, res, next) => {
     try {
         const {
             title,
@@ -13,16 +14,12 @@ bookRouter.post("/", async (req, res, next) => {
             review,
             quotes,
             notes,
-            userId,
         } = req.body;
+        const { user } = req;
 
+      console.log("user", user)
         console.log("Received POST request for book");
         console.log("req.body", req.body);
-
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
 
         const book = new Book({
             title,
@@ -46,10 +43,10 @@ bookRouter.post("/", async (req, res, next) => {
     }
 });
 
-bookRouter.get("/", async (req, res) => {
+bookRouter.get("/", requireAuth, async (req, res) => {
     try {
-        const { userId } = req.query;
-        const books = await Book.find({ userId });
+        const userId = req.user._id;
+        const books = await Book.find({ user: userId });
         if (books.length > 0) {
             res.status(200).json(books);
         } else {
@@ -60,11 +57,11 @@ bookRouter.get("/", async (req, res) => {
     }
 });
 
-bookRouter.get("/:title", async (req, res) => {
+bookRouter.get("/:title", requireAuth, async (req, res) => {
     try {
         const { title } = req.params;
-        const { userId } = req.query;
-        const book = await Book.findOne({ title, userId });
+        const userId = req.user._id;
+        const book = await Book.findOne({ title, user: userId });
         if (book) {
             res.status(200).json(book);
         } else {
@@ -75,14 +72,14 @@ bookRouter.get("/:title", async (req, res) => {
     }
 });
 
-bookRouter.put("/:title", async (req, res) => {
+bookRouter.put("/:title", requireAuth, async (req, res) => {
     const { title } = req.params;
-    const { userId } = req.query;
+    const userId = req.user._id;
     const updatedData = req.body;
 
     try {
         const book = await Book.findOneAndUpdate(
-            { title: decodeURIComponent(title), userId },
+            { title: decodeURIComponent(title), user: userId },
             updatedData,
             { new: true }
         );
@@ -99,13 +96,13 @@ bookRouter.put("/:title", async (req, res) => {
     }
 });
 
-bookRouter.delete("/:title", async (req, res) => {
+bookRouter.delete("/:title", requireAuth, async (req, res) => {
     const { title } = req.params;
-    const { userId } = req.query;
+    const userId = req.user._id;
     try {
         const book = await Book.findOneAndDelete({
             title: decodeURIComponent(title),
-            userId,
+            user: userId,
         });
 
         if (!book) {

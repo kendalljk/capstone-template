@@ -15,62 +15,61 @@ const NewUser = ({ handleModalClose, setLoggedIn }) => {
 
     const navigate = useNavigate();
 
-    const handleRegistration = async (e) => {
-        e.preventDefault();
+const handleRegistration = async (e) => {
+    e.preventDefault();
 
-        const newUser = {
-            username,
-            email,
-            password,
-            firstName,
-            lastName,
-        };
-
-        try {
-            await axios.post(
-                "http://localhost:3001/api/users/register",
-                newUser
-            );
-            console.log("User registered:", newUser);
-
-            const response = await axios.post(
-                "http://localhost:3001/api/users/login",
-                {
-                    email,
-                    password,
-                }
-            );
-
-            if (response.data && response.data.token) {
-                const { token, user } = response.data;
-                localStorage.setItem("token", token);
-
-                setUser(user);
-
-                setLoggedIn(true);
-                navigate("/shelf");
-                handleModalClose();
-            } else {
-                setError("Login after registration failed. Please try again.");
-            }
-        } catch (registrationError) {
-            console.error(
-                "Error during registration:",
-                registrationError.message
-            );
-            if (
-                registrationError.response &&
-                registrationError.response.data &&
-                registrationError.response.data.message
-            ) {
-                setError(registrationError.response.data.message);
-            } else {
-                setError(
-                    "An error occurred during registration. Please try again."
-                );
-            }
-        }
+    const newUser = {
+        username,
+        email,
+        password,
+        firstName,
+        lastName,
     };
+
+    try {
+        await axios.post("http://localhost:3001/api/auth/register", newUser);
+        console.log("User registered:", newUser);
+
+        const response = await axios.post(
+            "http://localhost:3001/api/auth/login",
+            {
+                email,
+                password,
+          }
+          );
+          console.log("response", response)
+
+        if (response.data && response.data.token) {
+            const { token, user } = response.data;
+          localStorage.setItem("token", token);
+          console.log("token", token)
+
+            setUser(user);
+
+            setLoggedIn(true);
+            navigate("/shelf");
+            handleModalClose();
+        } else {
+            setError("Login after registration failed. Please try again.");
+        }
+    } catch (registrationError) {
+        console.error("Error during registration:", registrationError.message);
+
+        // Let's also check for login error
+        if (
+            registrationError.response &&
+            registrationError.response.config &&
+            registrationError.response.config.url.endsWith("/api/auth/login")
+        ) {
+            setError("Login failed. Please try logging in manually.");
+        } else {
+            setError(
+                registrationError.response?.data?.message ||
+                    "An error occurred. Please try again."
+            );
+        }
+    }
+};
 
     return (
         <div className="">
